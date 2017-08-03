@@ -155,12 +155,11 @@ job "hashi-ui" {
       #
       #     https://www.nomadproject.io/docs/job-specification/template.html
       #
-      # template {
-      #   data          = "---\nkey: {{ key \"service/my-key\" }}"
-      #   destination   = "local/file.yml"
-      #   change_mode   = "signal"
-      #   change_signal = "SIGHUP"
-      # }
+      template {
+        data          = "---\nkey: {{ with secret \"secret/hello\" }}{{ .Data.value }}{{ end }}\n"
+        destination   = "local/file.yml"
+        change_mode   = "noop"
+      }
 
       # The "template" stanza can also be used to create environment variables
       # for tasks that prefer those to config files. The task will be restarted
@@ -184,11 +183,10 @@ job "hashi-ui" {
       #
       #     https://www.nomadproject.io/docs/job-specification/vault.html
       #
-      # vault {
-      #   policies      = ["cdn", "frontend"]
-      #   change_mode   = "signal"
-      #   change_signal = "SIGHUP"
-      # }
+      vault {
+        policies      = [ "default", "secret" ]
+        change_mode   = "noop"
+      }
 
       # Controls the timeout between signalling a task it will be killed
       # and killing the task. If not set a default is used.
