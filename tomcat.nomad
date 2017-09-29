@@ -69,14 +69,20 @@ job "tomcat" {
         }
       }
 
-      artifact {
-        source      = "https://s3-eu-west-1.amazonaws.com/web-bucket-pabich/server.xml.tpl"
-        mode        = "file"
-        destination = "local/server.xml.tpl"
-      }
+    artifact {
+      source      = "https://s3-eu-west-1.amazonaws.com/web-bucket-pabich/server.xml.tpl"
+      mode        = "file"
+      destination = "local/server.xml.tpl"
+    }
+
+    artifact {
+      source      = "https://github.com/bdclark/docker-tomcat-consul/raw/master/tomcat/conf/tomcat-users.xml.ctmpl"
+      mode        = "file"
+      destination = "local/tomcat-users.xml.ctmpl"
+    }
 
 
-      # logs {
+    # logs {
       #   max_files     = 10
       #   max_file_size = 15
       # }
@@ -99,7 +105,7 @@ job "tomcat" {
 
       service {
         name = "tomcat-test"
-        tags = [ "tomcat" ]
+        tags = [ "tomcat","web" ]
         port = "http"
         check {
           name     = "alive"

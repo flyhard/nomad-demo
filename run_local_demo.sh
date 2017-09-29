@@ -3,31 +3,45 @@
 
 cd $(dirname $0)
 
-echo \nStarting consul in the background\n
+
+echo
+echo Starting consul in the background\n
 consul agent -dev > consul.log &
 
-echo \nStarting Vault in the background\n
+
+echo
+echo Starting Loadbalancer
+fabio 2>&1 > fabio.log &
+
+echo
+echo Starting Vault in the background\n
 vault server -dev -log-level=debug 2>&1 > vault.log &
 export VAULT_ADDR=http://127.0.0.1:8200
 
 vault audit-enable file file_path=$PWD/audit.log
 
-echo \nWriting Secret into Vault:
+echo
+echo Writing Secret into Vault:
 vault write secret/hello value=world
 
-echo \nCreating policy to allow access to our secret:
+echo
+echo Creating policy to allow access to our secret:
 vault policy-write secret secret.policy
 
-echo \nCreating a token for Nomad:
+echo
+echo Creating a token for Nomad:
 token=$(vault token-create -orphan -policy="root" -format json|jq ".auth.client_token"| tr -d '"')
 
-echo \nStarting Nomad in the background
+echo
+echo Starting Nomad in the background
 VAULT_TOKEN=$token nomad agent -config nomad.hcl > nomad.log &
 
 sleep 15
 
-echo \nScheduling our UI to start
+echo
+echo Scheduling our UI to start
 nomad run hashi-ui.nomad
+nomad run haproxy.nomad
 
 read -p "Press any key to continue" -n1 -s
 echo
@@ -62,7 +76,7 @@ done
 read -p "Press any key to END the demo" -n1 -s
 echo
 
-kill %3 %2 %1
+kill %4 %3 %2 %1
 rm -rf /tmp/nomad-data
 wait
 
