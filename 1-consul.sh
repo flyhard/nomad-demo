@@ -3,4 +3,4 @@
 echo
 echo Starting consul in the background
 
-consul agent -dev | tee consul.log
+consul agent -dev -log-level=info | tee consul.log

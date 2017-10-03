@@ -66,7 +66,7 @@ job "hashi-ui" {
 
       service {
         name = "hashi-ui"
-        tags = [ "global", "ui", "web","urlprefix-/hashi-ui","urlprefix-/ws"  ]
+        tags = [ "global", "ui", "web","urlprefix-localhost:8080/"  ]
         port = "UI"
         check {
           name     = "tcp alive"

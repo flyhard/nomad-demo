@@ -1,3 +1,3 @@
 #!/usr/bin/env bash
 
-fabio
+nomad run drd.nomad

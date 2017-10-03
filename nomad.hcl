@@ -1,6 +1,6 @@
 bind_addr = "0.0.0.0"
 data_dir = "/tmp/nomad-data"
-log_level = "DEBUG"
+log_level = "INFO"
 enable_debug = true
 
 server {

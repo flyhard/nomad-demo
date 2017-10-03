@@ -21,7 +21,7 @@ job "logging-elk" {
 
       config {
         image = "elasticsearch"
-        hostname = "elasticsearch.local"
+        hostname = "elasticsearch.service.local"
 //        network_mode = "external"
 //        dns_servers = ["172.17.0.1"]
 //        dns_search_domains = ["weave.local."]
@@ -42,7 +42,7 @@ job "logging-elk" {
       }
       service {
         name="elasticsearch"
-        tags=["urlprefix-elasticsearch.local:9999/"]
+        tags=["urlprefix-elasticsearch.service.consul:9999/"]
         port = "elasticsearch"
         check {
           name     = "alive"
@@ -60,11 +60,11 @@ job "logging-elk" {
 
       env{
         SERVER_NAME="kibana.local:9999"
-        ELASTICSEARCH_URL="http://elasticsearch.local:9999/"
+        ELASTICSEARCH_URL="http://elasticsearch.service.consul:9999/"
       }
       config {
         image = "kibana"
-        hostname = "kibana.local"
+        hostname = "elasticsearch.service.consul"
 //        network_mode = "external"
 //        dns_servers = ["127.0.0.1:8600"]
 //        dns_search_domains = ["service.consul."]
@@ -86,7 +86,7 @@ job "logging-elk" {
       }
       service {
         name="kibana"
-        tags=["urlprefix-kibana.local:9999/"]
+        tags=["urlprefix-kibana.service.consul:9999/"]
         port = "kibana"
         check {
           name     = "alive"

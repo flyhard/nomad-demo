@@ -1,3 +1,3 @@
 #!/usr/bin/env bash
 
-hashi-ui -consul-enable -nomad-enable
+nomad run hashi-ui.nomad
