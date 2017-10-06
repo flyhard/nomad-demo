@@ -1,4 +1,4 @@
-job "hashi-ui" {
+job "hashiui" {
 
   datacenters = [ "dc1" ]
 
